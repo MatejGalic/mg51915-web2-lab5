@@ -51,12 +51,13 @@ app.post("/saveSnap", function (req, res) {
 });
 
 app.post("/remindMe", function (req, res) {
+  console.log("Accepted reminder");
+  console.log(req.body);
   setTimeout(async () => {
-    console.log(req);
-    console.log(req.body);
-    console.log(req.body.sub);
+    console.log("Sending reminder");
     await sendReminderPushNotification(req.body.sub, "Delayed notif");
   }, 5000);
+  res.json({ success: true, id: req.body.id });
 });
 
 app.get("/snaps", function (req, res) {
