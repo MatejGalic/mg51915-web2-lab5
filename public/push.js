@@ -11,7 +11,6 @@ if ("Notification" in window && "serviceWorker" in navigator) {
       }
 
       // let sub = JSON.parse(localStorage.getItem("reminderSubscription"));
-
       // fetch("/remindMe", {
       //   method: "POST",
       //   headers: {
@@ -63,10 +62,12 @@ async function setupPushSubscription() {
         body: JSON.stringify({ sub }),
       });
       if (res.ok) {
-        alert("Yay, subscription generated and saved:\n" + JSON.stringify(sub));
+        console.log(sub);
+        alert("Subscription generated and saved!\n");
       }
     } else {
-      alert("You are alreay subscribed:\n" + JSON.stringify(sub));
+      console.log(sub);
+      alert("You are already subscribed!\n");
     }
   } catch (error) {
     console.log(error);

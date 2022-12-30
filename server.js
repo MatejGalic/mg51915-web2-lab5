@@ -5,6 +5,14 @@ const multer = require("multer");
 const fse = require("fs-extra");
 const httpPort = process.env.PORT || 3001;
 
+let subscriptions = [];
+const SUBS_FILENAME = "subscriptions.json";
+try {
+  subscriptions = JSON.parse(fs.readFileSync(SUBS_FILENAME));
+} catch (error) {
+  console.error(error);
+}
+
 const app = express();
 app.use(express.json());
 
@@ -129,15 +137,6 @@ app.get("/audio", function (req, res) {
 //#endregion Controllers
 
 const webpush = require("web-push");
-
-// Umjesto baze podataka, čuvam pretplate u datoteci:
-let subscriptions = [];
-const SUBS_FILENAME = "subscriptions.json";
-try {
-  subscriptions = JSON.parse(fs.readFileSync(SUBS_FILENAME));
-} catch (error) {
-  console.error(error);
-}
 
 async function sendPushNotifications(snapTitle) {
   webpush.setVapidDetails(
