@@ -19,12 +19,18 @@ app.get("/", function (req, res) {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-const UPLOAD_PATH = path.join(__dirname, "public", "uploads");
+const UPLOAD_PATH_SNAPS = path.join(__dirname, "public", "uploads", "snaps");
+const UPLOAD_PATH_AUDIO = path.join(
+  __dirname,
+  "public",
+  "uploads",
+  "audio"
+);
 
 var uploadSnaps = multer({
   storage: multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, UPLOAD_PATH);
+      cb(null, UPLOAD_PATH_SNAPS);
     },
     filename: function (req, file, cb) {
       let fn = file.originalname.replace(/:/g, "-");
@@ -36,7 +42,7 @@ var uploadSnaps = multer({
 var uploadAudio = multer({
   storage: multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, UPLOAD_PATH);
+      cb(null, UPLOAD_PATH_AUDIO);
     },
     filename: function (req, file, cb) {
       let fn = file.originalname.replace(/:/g, "-");
@@ -103,9 +109,18 @@ app.post("/remindMe", function (req, res) {
 });
 
 app.get("/snaps", function (req, res) {
-  let files = fse.readdirSync(UPLOAD_PATH);
+  let files = fse.readdirSync(UPLOAD_PATH_SNAPS);
   files = files.reverse().slice(0, 25);
-  console.log("In", UPLOAD_PATH, "there are", files);
+  console.log("In", UPLOAD_PATH_SNAPS, "there are", files);
+  res.json({
+    files,
+  });
+});
+
+app.get("/audio", function (req, res) {
+  let files = fse.readdirSync(UPLOAD_PATH_AUDIO);
+  files = files.reverse().slice(0, 25);
+  console.log("In", UPLOAD_PATH_AUDIO, "there are", files);
   res.json({
     files,
   });

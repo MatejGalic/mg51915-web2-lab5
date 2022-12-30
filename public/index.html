@@ -76,6 +76,16 @@
         </div>
       </template>
     </div>
+    <div id="audio">
+      <template id="audioTemplate">
+        <div
+          class="d-flex flex-column align-items-center p-1 shadow p-3 mb-2 bg-white rounded"
+        >
+          <audio src="tbd" controls></audio>
+          <h3>title</h3>
+        </div>
+      </template>
+    </div>
     <script>
       navigator.serviceWorker
         .register("./sw.js", { type: "module" })
@@ -94,13 +104,40 @@
                 let template = document.querySelector("#snapTemplate");
                 var clone = template.content.cloneNode(true);
                 let img = clone.querySelector("img");
-                img.src = "/uploads/" + fileName;
+                img.src = "/uploads/snaps/" + fileName;
                 let title = clone.querySelector("h3");
                 title.textContent = fileName
                   .substring(24)
                   .replaceAll("_", " ")
                   .replaceAll(".png", "");
                 snapsDiv.appendChild(clone);
+              });
+            });
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
+      fetch("/audio")
+        .then((res) => {
+          console.log("res", res);
+          if (res.ok) {
+            res.json().then((data) => {
+              console.log("data", data);
+              data.files.forEach((fileName) => {
+                console.log("appending", fileName);
+                let audioDiv = document.querySelector("#audio");
+                let template = document.querySelector("#audioTemplate");
+                var clone = template.content.cloneNode(true);
+                let audio = clone.querySelector("audio");
+                audio.src = "/uploads/audio/" + fileName;
+                let title = clone.querySelector("h3");
+                title.textContent = fileName
+                  .substring(24)
+                  .replaceAll("_", " ")
+                  .replaceAll(".wav", "");
+                audioDiv.appendChild(clone);
               });
             });
           }
