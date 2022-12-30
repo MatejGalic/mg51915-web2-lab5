@@ -11,4 +11,7 @@ npm-debug.log
 Dockerfile
 docker-compose.yml
 
+# Custom
 public/uploads
+
+/subscriptions.json
