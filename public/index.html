@@ -94,12 +94,10 @@
 
       fetch("/snaps")
         .then((res) => {
-          console.log("res", res);
           if (res.ok) {
             res.json().then((data) => {
               console.log("data", data);
               data.files.forEach((fileName) => {
-                console.log("appending", fileName);
                 let snapsDiv = document.querySelector("#snaps");
                 let template = document.querySelector("#snapTemplate");
                 var clone = template.content.cloneNode(true);
@@ -121,12 +119,10 @@
 
       fetch("/audio")
         .then((res) => {
-          console.log("res", res);
           if (res.ok) {
             res.json().then((data) => {
               console.log("data", data);
               data.files.forEach((fileName) => {
-                console.log("appending", fileName);
                 let audioDiv = document.querySelector("#audio");
                 let template = document.querySelector("#audioTemplate");
                 var clone = template.content.cloneNode(true);

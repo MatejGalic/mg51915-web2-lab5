@@ -53,7 +53,7 @@ self.addEventListener("fetch", (event) => {
         // console.log("----------------->> Network request for ",
         //     event.request.url
         // );
-        return fetch(event.request).then((response) => {
+        return fetch(event.request, { cache: "no-store" }).then((response) => {
           // console.log("response.status = " + response.status);
           if (response.status === 404) {
             return caches.match("404.html");
@@ -89,58 +89,62 @@ let syncSnaps = async function () {
   entries().then((entries) => {
     entries.forEach((entry) => {
       let snap = entry[1]; //  Each entry is an array of [key, value].
-      let formData = new FormData();
-      formData.append("id", snap.id);
-      formData.append("ts", snap.ts);
-      formData.append("title", snap.title);
-      formData.append("image", snap.image, snap.id + ".png");
-      fetch("/saveSnap", {
-        method: "POST",
-        body: formData,
-      })
-        .then(function (res) {
-          if (res.ok) {
-            res.json().then(function (data) {
-              console.log("Deleting from idb:", data.id);
-              del(data.id);
-            });
-          } else {
-            console.log(res);
-          }
+      if (snap.image != null) {
+        let formData = new FormData();
+        formData.append("id", snap.id);
+        formData.append("ts", snap.ts);
+        formData.append("title", snap.title);
+        formData.append("image", snap.image, snap.id + ".png");
+        fetch("/saveSnap", {
+          method: "POST",
+          body: formData,
         })
-        .catch(function (error) {
-          console.log(error);
-        });
+          .then(function (res) {
+            if (res.ok) {
+              res.json().then(function (data) {
+                console.log("Deleting from idb:", data.id);
+                del(data.id);
+              });
+            } else {
+              console.log(res);
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
     });
   });
 };
-//TODO: finish
+
 let syncAudio = async function () {
   entries().then((entries) => {
     entries.forEach((entry) => {
       let snap = entry[1]; //  Each entry is an array of [key, value].
-      let formData = new FormData();
-      formData.append("id", snap.id);
-      formData.append("ts", snap.ts);
-      formData.append("title", snap.title);
-      formData.append("audio", snap.image, snap.id + ".wav");
-      fetch("/saveAudio", {
-        method: "POST",
-        body: formData,
-      })
-        .then(function (res) {
-          if (res.ok) {
-            res.json().then(function (data) {
-              console.log("Deleting from idb:", data.id);
-              del(data.id);
-            });
-          } else {
-            console.log(res);
-          }
+      if (snap.audio != null) {
+        let formData = new FormData();
+        formData.append("id", snap.id);
+        formData.append("ts", snap.ts);
+        formData.append("title", snap.title);
+        formData.append("audio", snap.audio, snap.id + ".wav");
+        fetch("/saveAudio", {
+          method: "POST",
+          body: formData,
         })
-        .catch(function (error) {
-          console.log(error);
-        });
+          .then(function (res) {
+            if (res.ok) {
+              res.json().then(function (data) {
+                console.log("Deleting from idb:", data.id);
+                del(data.id);
+              });
+            } else {
+              console.log(res);
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
     });
   });
 };

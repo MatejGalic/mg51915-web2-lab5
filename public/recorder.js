@@ -77,7 +77,7 @@ if (navigator.mediaDevices) {
               id,
               ts,
               title: snapName.value,
-              image: blob,
+              audio: blob,
             });
             return navigator.serviceWorker.ready;
           })
