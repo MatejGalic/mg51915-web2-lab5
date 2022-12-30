@@ -10,7 +10,7 @@ if ("Notification" in window && "serviceWorker" in navigator) {
         console.log("User denied push notifs:", res);
       }
 
-      let sub = JSON.parse(localStorage.getItem("reminderSubscription"));
+      // let sub = JSON.parse(localStorage.getItem("reminderSubscription"));
 
       // fetch("/remindMe", {
       //   method: "POST",

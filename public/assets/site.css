@@ -2,8 +2,8 @@
   border: 1px solid blue;
 } */
 body {
-  font-family: 'Fira Sans', Verdana, Geneva, Tahoma, sans-serif;
-  background-color: #DDD;
+  font-family: "Fira Sans", Verdana, Geneva, Tahoma, sans-serif;
+  background-color: #ddd;
 }
 /* div.header {
   height: 10vh;
@@ -18,4 +18,15 @@ div.logo-wrapper {
 div.logo-wrapper img {
   max-width: 75%;
   max-height: 800px;
+}
+
+#snapsContainer {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+}
+@media screen and (min-width: 1180px) {
+  #snapsContainer {
+    flex-direction: row;
+  }
 }

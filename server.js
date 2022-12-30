@@ -110,7 +110,7 @@ app.post("/remindMe", function (req, res) {
 
 app.get("/snaps", function (req, res) {
   let files = fse.readdirSync(UPLOAD_PATH_SNAPS);
-  files = files.reverse().slice(0, 25);
+  files = files.reverse().slice(0, 10);
   console.log("In", UPLOAD_PATH_SNAPS, "there are", files);
   res.json({
     files,
@@ -119,7 +119,7 @@ app.get("/snaps", function (req, res) {
 
 app.get("/audio", function (req, res) {
   let files = fse.readdirSync(UPLOAD_PATH_AUDIO);
-  files = files.reverse().slice(0, 25);
+  files = files.reverse().slice(0, 15);
   console.log("In", UPLOAD_PATH_AUDIO, "there are", files);
   res.json({
     files,
