@@ -20,6 +20,7 @@ app.get("/", function (req, res) {
 });
 
 const UPLOAD_PATH = path.join(__dirname, "public", "uploads");
+
 var uploadSnaps = multer({
   storage: multer.diskStorage({
     destination: function (req, file, cb) {
@@ -32,6 +33,19 @@ var uploadSnaps = multer({
   }),
 }).single("image");
 
+var uploadAudio = multer({
+  storage: multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, UPLOAD_PATH);
+    },
+    filename: function (req, file, cb) {
+      let fn = file.originalname.replace(/:/g, "-");
+      cb(null, fn);
+    },
+  }),
+}).single("audio");
+
+//#region Controllers
 app.post("/saveSnap", function (req, res) {
   uploadSnaps(req, res, async function (err) {
     if (err) {
@@ -50,6 +64,34 @@ app.post("/saveSnap", function (req, res) {
   });
 });
 
+app.post("/saveAudio", function (req, res) {
+  uploadAudio(req, res, async function (err) {
+    if (err) {
+      console.log(err);
+      res.json({
+        success: false,
+        error: {
+          message: "Upload failed:: " + JSON.stringify(err),
+        },
+      });
+    } else {
+      console.log(req.body);
+      res.json({ success: true, id: req.body.id });
+      await sendPushNotifications(req.body.title);
+    }
+  });
+});
+
+app.post("/saveSubscription", function (req, res) {
+  console.log(req.body);
+  let sub = req.body.sub;
+  subscriptions.push(sub);
+  fs.writeFileSync(SUBS_FILENAME, JSON.stringify(subscriptions));
+  res.json({
+    success: true,
+  });
+});
+
 app.post("/remindMe", function (req, res) {
   console.log("Accepted reminder");
   console.log(req.body);
@@ -62,12 +104,14 @@ app.post("/remindMe", function (req, res) {
 
 app.get("/snaps", function (req, res) {
   let files = fse.readdirSync(UPLOAD_PATH);
-  files = files.reverse().slice(0, 10);
+  files = files.reverse().slice(0, 25);
   console.log("In", UPLOAD_PATH, "there are", files);
   res.json({
     files,
   });
 });
+
+//#endregion Controllers
 
 const webpush = require("web-push");
 
@@ -79,16 +123,6 @@ try {
 } catch (error) {
   console.error(error);
 }
-
-app.post("/saveSubscription", function (req, res) {
-  console.log(req.body);
-  let sub = req.body.sub;
-  subscriptions.push(sub);
-  fs.writeFileSync(SUBS_FILENAME, JSON.stringify(subscriptions));
-  res.json({
-    success: true,
-  });
-});
 
 async function sendPushNotifications(snapTitle) {
   webpush.setVapidDetails(

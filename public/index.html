@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PWA SW demo</title>
+    <title>PWA SW</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
       rel="stylesheet"
@@ -36,7 +36,7 @@
         >
           <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand d-flex align-items-center" href="#">
+        <a class="navbar-brand d-flex align-items-center" href="index.html">
           Matej's PWA
           <img
             src="/assets/img/logo-brand.png"
@@ -53,6 +53,9 @@
             </li>
             <li class="nav-item">
               <a class="nav-link" href="brag.html">Brag</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="recorder.html">Recorder</a>
             </li>
           </ul>
         </div>
@@ -90,7 +93,7 @@
                 let snapsDiv = document.querySelector("#snaps");
                 let template = document.querySelector("#snapTemplate");
                 var clone = template.content.cloneNode(true);
-                let img = clone.querySelector("img");                
+                let img = clone.querySelector("img");
                 img.src = "/uploads/" + fileName;
                 let title = clone.querySelector("h3");
                 title.textContent = fileName
