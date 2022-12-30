@@ -3,7 +3,7 @@
   "short_name": "Web2 | labos 5",
   "description": "Laboratorijska vježba za kolegij Napredni razvoj programske potpore za web",
   "display": "fullscreen",
-  "theme_color": "red",
+  "theme_color": "silver",
   "background_color": "#DDD",
   "start_url": "/index.html",
   "scope": ".",
