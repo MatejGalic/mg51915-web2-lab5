@@ -31,6 +31,7 @@ var uploadSnaps = multer({
     },
   }),
 }).single("image");
+
 app.post("/saveSnap", function (req, res) {
   uploadSnaps(req, res, async function (err) {
     if (err) {
@@ -48,6 +49,16 @@ app.post("/saveSnap", function (req, res) {
     }
   });
 });
+
+app.post("/remindMe", function (req, res) {
+  setTimeout(async () => {
+    console.log(req);
+    console.log(req.body);
+    console.log(req.body.sub);
+    await sendReminderPushNotification(req.body.sub, "Delayed notif");
+  }, 5000);
+});
+
 app.get("/snaps", function (req, res) {
   let files = fse.readdirSync(UPLOAD_PATH);
   files = files.reverse().slice(0, 10);
@@ -89,14 +100,9 @@ async function sendPushNotifications(snapTitle) {
       console.log("Sending notif to", sub);
       await webpush.sendNotification(
         sub,
-        // JSON.stringify({
-        //   title: "New snap!",
-        //   body: "Somebody just snaped a new photo: " + snapTitle,
-        //   redirectUrl: "/index.html",
-        // })
         JSON.stringify({
           title: "New snap!",
-          body: "Somebody just snaped a new photo: Remind me Lorem ipsum Remind me Lorem ipsum Remind me Lorem ipsum Remind me Lorem ipsum Remind me Lorem ipsum",
+          body: "Somebody just snaped a new photo: " + snapTitle,
           redirectUrl: "/index.html",
         })
       );
@@ -104,6 +110,27 @@ async function sendPushNotifications(snapTitle) {
       console.error(error);
     }
   });
+}
+
+async function sendReminderPushNotification(subscription, message) {
+  webpush.setVapidDetails(
+    "mailto:matej.galic@fer.hr",
+    "BI-KYrU1a0s1NXHysrfkeyJ6FyhzyXEhdkJnMem5aU4d1woks9LnfwfQSyS2yYgEHvvJJHNrhg-LzEktK7gutEc",
+    "fMSlCm3VGPm2AmiDszZOLq5zKjQRrKvbQTfz1RidzxM"
+  );
+  try {
+    console.log("Sending notif to", subscription);
+    await webpush.sendNotification(
+      subscription,
+      JSON.stringify({
+        title: "Reminder!",
+        body: message,
+        redirectUrl: "/index.html",
+      })
+    );
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 app.listen(httpPort, function () {
