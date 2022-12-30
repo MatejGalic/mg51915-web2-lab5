@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PWA SW</title>
+    <title>Matej's PWA SW</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
       rel="stylesheet"
@@ -62,29 +62,36 @@
       </div>
     </nav>
     <div class="text-end">
+      Turn on notifications for new uploads!
       <button id="btnEnableNotifications" class="btn btn-outline-success">
         <i class="bi bi-bell"></i>
       </button>
     </div>
-    <div id="snaps">
-      <template id="snapTemplate">
-        <div
-          class="d-flex flex-column align-items-center p-1 shadow p-3 mb-2 bg-white rounded"
-        >
-          <img class="img-fluid" src="tbd" />
-          <h3>title</h3>
-        </div>
-      </template>
-    </div>
-    <div id="audio">
-      <template id="audioTemplate">
-        <div
-          class="d-flex flex-column align-items-center p-1 shadow p-3 mb-2 bg-white rounded"
-        >
-          <audio src="tbd" controls></audio>
-          <h3>title</h3>
-        </div>
-      </template>
+
+    <div class="d-flex justify-content-evenly">
+      <div id="snaps">
+        <h1> Snaps </h1>
+        <template id="snapTemplate">
+          <div
+            class="d-flex flex-column align-items-center p-1 shadow p-3 mb-2 bg-white rounded"
+          >
+            <img class="img-fluid" src="tbd" />
+            <h3>title</h3>
+          </div>
+        </template>
+      </div>
+
+      <div id="audio">
+        <h1> Audio clips </h1>
+        <template id="audioTemplate">
+          <div
+            class="d-flex flex-column align-items-center p-1 shadow p-3 mb-2 bg-white rounded"
+          >
+            <audio src="tbd" controls></audio>
+            <h3>title</h3>
+          </div>
+        </template>
+      </div>
     </div>
     <script>
       navigator.serviceWorker

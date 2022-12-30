@@ -12,14 +12,14 @@ if ("Notification" in window && "serviceWorker" in navigator) {
 
       let sub = JSON.parse(localStorage.getItem("reminderSubscription"));
 
-      fetch("/remindMe", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({ sub: sub, message: "Reminder placeholder" }),
-      });
+      // fetch("/remindMe", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Accept: "application/json",
+      //   },
+      //   body: JSON.stringify({ sub: sub, message: "Reminder placeholder" }),
+      // });
     });
   });
 } else {

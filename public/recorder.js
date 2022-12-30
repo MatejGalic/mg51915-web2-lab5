@@ -6,8 +6,8 @@ if (navigator.mediaDevices) {
   const stop = document.getElementById("stop");
   const record = document.getElementById("start");
   const uploadContainer = document.getElementById("afterAudio");
-  const soundClips = document.getElementById("soundClips");
-  const audio = document.createElement("audio");
+  const audio = document.getElementById("audio");
+  const uploadButton = document.getElementById("btnUpload");
   const constraints = { audio: true };
   let chunks = [];
 
@@ -34,15 +34,6 @@ if (navigator.mediaDevices) {
       mediaRecorder.onstop = (e) => {
         uploadContainer.classList.remove("d-none");
 
-        const clipContainer = document.createElement("article");
-
-        clipContainer.classList.add("clip");
-        audio.setAttribute("controls", "");
-
-        clipContainer.appendChild(audio);
-
-        soundClips.appendChild(clipContainer);
-
         audio.controls = true;
         const blob = new Blob(chunks, { type: "audio/wav; codecs=opus" });
         chunks = [];
@@ -58,41 +49,42 @@ if (navigator.mediaDevices) {
       console.error(`The following error occurred: ${err}`);
     });
 
-  document
-    .getElementById("btnUpload")
-    .addEventListener("click", function (event) {
-      event.preventDefault();
-      if (!snapName.value.trim()) {
-        alert("Give it a catchy name!");
-        return false;
-      }
-      if ("serviceWorker" in navigator && "SyncManager" in window) {
-        let url = audio.src;
-        fetch(url)
-          .then((res) => res.blob())
-          .then((blob) => {
-            let ts = new Date().toISOString();
-            let id = ts + snapName.value.replace(/\s/g, "_");
-            set(id, {
-              id,
-              ts,
-              title: snapName.value,
-              audio: blob,
-            });
-            return navigator.serviceWorker.ready;
-          })
-          .then((swRegistration) => {
-            return swRegistration.sync.register("sync-audio");
-          })
-          .then(() => {
-            console.log("Queued for sync");
-          })
-          .catch((error) => {
-            alert(error);
-            console.log(error);
+  uploadButton.addEventListener("click", function (event) {
+    event.preventDefault();
+    if (!snapName.value.trim()) {
+      alert("Give it a catchy name!");
+      return false;
+    }
+    if ("serviceWorker" in navigator && "SyncManager" in window) {
+      let url = audio.src;
+      fetch(url)
+        .then((res) => res.blob())
+        .then((blob) => {
+          let ts = new Date().toISOString();
+          let id = ts + snapName.value.replace(/\s/g, "_");
+          set(id, {
+            id,
+            ts,
+            title: snapName.value,
+            audio: blob,
           });
-      } else {
-        alert("Background sync is not supported on your browser.");
-      }
-    });
+          return navigator.serviceWorker.ready;
+        })
+        .then((swRegistration) => {
+          return swRegistration.sync.register("sync-audio");
+        })
+        .then(() => {
+          console.log("Queued for sync");
+          // Reset user interface
+          uploadContainer.classList.add("d-none");
+          record.classList.remove("d-none")
+        })
+        .catch((error) => {
+          alert(error);
+          console.log(error);
+        });
+    } else {
+      alert("Background sync is not supported on your browser.");
+    }
+  });
 }
