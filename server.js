@@ -28,12 +28,7 @@ app.get("/", function (req, res) {
 });
 
 const UPLOAD_PATH_SNAPS = path.join(__dirname, "public", "uploads", "snaps");
-const UPLOAD_PATH_AUDIO = path.join(
-  __dirname,
-  "public",
-  "uploads",
-  "audio"
-);
+const UPLOAD_PATH_AUDIO = path.join(__dirname, "public", "uploads", "audio");
 
 var uploadSnaps = multer({
   storage: multer.diskStorage({
@@ -73,7 +68,7 @@ app.post("/saveSnap", function (req, res) {
     } else {
       console.log(req.body);
       res.json({ success: true, id: req.body.id });
-      await sendPushNotifications(req.body.title);
+      await sendPushNotifications(req.body.title, true);
     }
   });
 });
@@ -91,7 +86,7 @@ app.post("/saveAudio", function (req, res) {
     } else {
       console.log(req.body);
       res.json({ success: true, id: req.body.id });
-      await sendPushNotifications(req.body.title);
+      await sendPushNotifications(req.body.title, false);
     }
   });
 });
@@ -138,7 +133,7 @@ app.get("/audio", function (req, res) {
 
 const webpush = require("web-push");
 
-async function sendPushNotifications(snapTitle) {
+async function sendPushNotifications(snapTitle, isSnap) {
   webpush.setVapidDetails(
     "mailto:matej.galic@fer.hr",
     "BI-KYrU1a0s1NXHysrfkeyJ6FyhzyXEhdkJnMem5aU4d1woks9LnfwfQSyS2yYgEHvvJJHNrhg-LzEktK7gutEc",
@@ -147,11 +142,12 @@ async function sendPushNotifications(snapTitle) {
   subscriptions.forEach(async (sub) => {
     try {
       console.log("Sending notif to", sub);
+      const mtype = isSnap ? "photo" : "audio clip";
       await webpush.sendNotification(
         sub,
         JSON.stringify({
           title: "New snap!",
-          body: "Somebody just snaped a new photo: " + snapTitle,
+          body: `Somebody just snapped a new ${mtype}: ` + snapTitle,
           redirectUrl: "/index.html",
         })
       );
