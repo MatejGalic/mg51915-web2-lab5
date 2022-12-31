@@ -23,7 +23,7 @@ div.logo-wrapper img {
 #snapsContainer {
   display: flex;
   justify-content: space-evenly;
-  flex-direction: column;
+  flex-direction: column-reverse;
 }
 @media screen and (min-width: 1180px) {
   #snapsContainer {
