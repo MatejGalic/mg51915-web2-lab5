@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Matej's PWA SW</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"
+    />
+    <link rel="stylesheet" href="./assets/site.css" />
+    <link rel="manifest" href="./manifest.json" />
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand d-flex align-items-center" href="index.html">
+          Matej's PWA
+          <img
+            src="/assets/img/logo-brand.png"
+            class="d-inline-block align-text-top"
+          />
+        </a>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="snap.html">Snap</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="recorder.html">Recorder</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="recorder.html">Reminder</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="text-end">
+      Turn on notifications for new uploads!
+      <button id="btnEnableNotifications" class="btn btn-outline-success">
+        <i class="bi bi-bell"></i>
+      </button>
+    </div>
+
+    <div class="d-flex flex-column align-items-center">
+      <div id="formContainer" class="align-items-center w-50">
+        <textarea
+          id="message"
+          type="text"
+          class="form-control mt-2"
+          placeholder="Enter a reminder message..."
+        ></textarea>
+        <input
+          id="timer"
+          type="number"
+          class="form-control mt-2"
+          placeholder="Enter timer in seconds"
+          value="10"
+          min="1"
+          max="1200"
+        />
+        <p>Enter time in seconds</p>
+        <button class="btn btn-success" id="btnUpload">
+          <i class="bi bi-cloud-upload"></i>
+          Upload
+        </button>
+      </div>
+    </div>
+    </div>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      crossorigin="anonymous"
+    ></script>
+    <script type="module" src="reminder.js"></script>
+  </body>
+</html>

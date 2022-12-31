@@ -106,8 +106,8 @@ app.post("/remindMe", function (req, res) {
   console.log(req.body);
   setTimeout(async () => {
     console.log("Sending reminder");
-    await sendReminderPushNotification(req.body.sub, "Delayed notif");
-  }, 5000);
+    await sendReminderPushNotification(req.body.sub, req.body.message);
+  },  req.body.timer * 1000 || 5000);
   res.json({ success: true, id: req.body.id });
 });
 

@@ -46,15 +46,7 @@ self.addEventListener("fetch", (event) => {
     caches
       .match(event.request)
       .then((response) => {
-        if (response) {
-          // console.log("Found " + event.request.url + " in cache!");
-          //return response;
-        }
-        // console.log("----------------->> Network request for ",
-        //     event.request.url
-        // );
         return fetch(event.request, { cache: "no-store" }).then((response) => {
-          // console.log("response.status = " + response.status);
           if (response.status === 404) {
             return caches.match("404.html");
           }
