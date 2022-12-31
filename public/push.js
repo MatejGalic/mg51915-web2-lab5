@@ -50,8 +50,6 @@ async function setupPushSubscription() {
         userVisibleOnly: true,
         applicationServerKey: urlBase64ToUint8Array(publicKey),
       });
-      // save subcription for reminder
-      localStorage.setItem("reminderSubscription", JSON.stringify(sub));
 
       let res = await fetch("/saveSubscription", {
         method: "POST",
