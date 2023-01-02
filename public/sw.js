@@ -5,6 +5,7 @@ const filesToCache = [
   "index.html",
   "offline.html",
   "404.html",
+  "/assets/site.css",
   "/assets/img/logo-brand.png",
   "https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap",
   "https://fonts.gstatic.com/s/firasans/v11/va9E4kDNxMZdWfMOD5Vvl4jLazX3dA.woff2",
@@ -59,10 +60,14 @@ self.addEventListener("fetch", (event) => {
       })
       .catch((error) => {
         console.log("Error", event.request.url, error);
-        // ovdje možemo pregledati header od zahtjeva i možda vratiti različite fallback sadržaje
-        // za različite zahtjeve - npr. ako je zahtjev za slikom možemo vratiti fallback sliku iz cachea
-        // ali zasad, za sve vraćamo samo offline.html:
-        return caches.match("offline.html");
+        
+        if (event.request.destination === "image") {
+          return caches.match("/assets/img/logo-brand.png");
+        } else if (event.request.destination === "style") {
+          return caches.match("/assets/site.css");
+        } else {
+          return caches.match("offline.html");
+        }
       })
   );
 });
